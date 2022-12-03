@@ -9,6 +9,28 @@ import (
 	"github.com/stianeikeland/go-rpio"
 )
 
+func NewShiftRegister(tr rpioProcessor, serPin, srclkPin, rclkPin int) ShiftRegister {
+	srclk := tr.Pin(srclkPin)
+	srclk.Output()
+	srclk.Low()
+
+	ser := tr.Pin(serPin)
+	ser.Output()
+	ser.Low()
+
+	rclk := tr.Pin(rclkPin)
+	rclk.Output()
+	rclk.Low()
+
+	sr := ShiftRegister{srclk: srclk,
+		ser:     ser,
+		rclk:    rclk,
+		outputs: make([]int, 8)}
+
+	sr.Clear()
+	return sr
+}
+
 type ShiftRegister struct {
 	srclk   pinProcessor
 	ser     pinProcessor
@@ -64,7 +86,6 @@ func (sr *ShiftRegister) Clear() {
 }
 
 func main() {
-
 	var debugMode = flag.Bool("debug", false, "run in debug mode")
 	flag.Parse()
 
@@ -77,94 +98,29 @@ func main() {
 	if err := tr.Open(); err != nil {
 		log.Fatalln(err)
 	}
+	sr := NewShiftRegister(tr, 16, 22, 27)
+	sr2 := NewShiftRegister(tr, 21, 20, 12)
+
 	defer func() {
+		sr.Clear()
+		sr2.Clear()
 		if err := tr.Close(); err != nil {
 			log.Fatalln(err)
 		}
 	}()
 
-	clockPin := 17
-	serialPin := 5
-
-	serial := tr.Pin(serialPin)
-	clock := tr.Pin(clockPin)
-	clock.Output()
-	serial.Output()
-
-	srclk := tr.Pin(22)
-	ser := tr.Pin(16)
-	rclk := tr.Pin(27)
-	srclk.Output()
-	rclk.Output()
-	ser.Output()
-	srclk.Low()
-	rclk.Low()
-	// ser.High()
-
-	// ShiftClock(srclk, rclk)
-	// go SerialMock(ser)
-	// go ClockFreq(10, clock)
-
-	sr := ShiftRegister{
-		srclk:   srclk,
-		ser:     ser,
-		rclk:    rclk,
-		outputs: make([]int, 8),
-	}
-
 	sr.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1})
+	sr2.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1})
 	time.Sleep(time.Second)
 	sr.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0})
+	sr2.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0})
 	time.Sleep(time.Second)
 	sr.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1})
+	sr2.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1})
 	time.Sleep(time.Second)
 	sr.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1})
+	sr2.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1})
 	time.Sleep(time.Second)
-
-	// sr.OnOff()
-	time.Sleep(time.Hour)
-	// sr.Clear()
-}
-
-func SerialMock(ser pinProcessor) {
-	for {
-		log.Println("ser high")
-		ser.High()
-		time.Sleep(time.Second * 5)
-		ser.Low()
-		log.Println("ser low")
-		time.Sleep(time.Second * 5)
-	}
-
-}
-
-func ShiftClock(srclk, rclk pinProcessor) {
-	highTime := time.Millisecond * 200
-	srclk.Low()
-	rclk.Low()
-	for {
-		log.Println("srclk high")
-		srclk.High()
-		time.Sleep(highTime)
-		srclk.Low()
-		log.Println("srclk low")
-		rclk.High()
-		time.Sleep(highTime)
-		rclk.Low()
-	}
-}
-
-func ClockFreq(freq float64, clock pinProcessor) {
-	for {
-		clock.High()
-		time.Sleep(time.Second * 5 / time.Duration((freq / 2)))
-		clock.Low()
-		time.Sleep(time.Second * 5 / time.Duration((freq / 2)))
-	}
-}
-
-func clock() {
-
 }
 
 type rpioProc struct{}
