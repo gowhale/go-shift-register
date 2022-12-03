@@ -1,4 +1,4 @@
-module golang-repo-template
+module go-shift-register
 
 go 1.17
 

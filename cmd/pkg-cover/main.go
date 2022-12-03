@@ -21,8 +21,8 @@ const (
 )
 
 var excludedPkgs = map[string]bool{
-	"golang-repo-template":           true,
-	"golang-repo-template/pkg/fruit": true,
+	"go-shift-register":           true,
+	"go-shift-register/pkg/fruit": true,
 }
 
 func main() {
