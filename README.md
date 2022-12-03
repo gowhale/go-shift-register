@@ -1,5 +1,6 @@
-# golang-repo-template
-A template for all my future Go projects!
+# go-shift-register
+
+This repo is used to drive shift registers in golang. I am using this model of shift register SN74HC595. [Datasheet](https://www.ti.com/lit/ds/symlink/sn74hc595.pdf?ts=1670067468436&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FSN74HC595)
 
 ## Actions created by this template:
 
