@@ -34,44 +34,45 @@ func main() {
 		}
 	}()
 
-	if err := sr.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1}); err != nil {
+	if err := lightShow(sr, sr2, sr3); err != nil {
 		log.Fatalln(err)
+	}
+}
+
+func lightShow(sr shift.Register, sr2 shift.Register, sr3 shift.Register) error {
+	if err := sr.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1}); err != nil {
+		return err
 	}
 	if err := sr2.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1}); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	if err := sr3.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0}); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	time.Sleep(time.Second * 5)
 	if err := sr.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0}); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	if err := sr2.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0}); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	if err := sr3.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0}); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	time.Sleep(time.Second * 5)
 	if err := sr.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1}); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	if err := sr2.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1}); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	if err := sr3.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1}); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	time.Sleep(time.Second * 5)
-	if err := sr.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1}); err != nil {
-		log.Fatalln(err)
-	}
-	if err := sr2.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1}); err != nil {
-		log.Fatalln(err)
-	}
 	if err := sr3.ShowCombo([]int{1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0}); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	time.Sleep(time.Second * 5)
+	return nil
 }
