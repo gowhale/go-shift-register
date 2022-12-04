@@ -9,7 +9,7 @@ import (
 	"github.com/stianeikeland/go-rpio"
 )
 
-func NewShiftRegister(tr rpioProcessor, serPin, srclkPin, rclkPin int) ShiftRegister {
+func NewShiftRegister(tr rpioProcessor, serPin, srclkPin, rclkPin, bits int) ShiftRegister {
 	srclk := tr.Pin(srclkPin)
 	srclk.Output()
 	srclk.Low()
@@ -22,10 +22,15 @@ func NewShiftRegister(tr rpioProcessor, serPin, srclkPin, rclkPin int) ShiftRegi
 	rclk.Output()
 	rclk.Low()
 
+	outputBits := []int{}
+	for i := 0; i < bits; i++ {
+		outputBits = append(outputBits, 0)
+	}
+
 	sr := ShiftRegister{srclk: srclk,
 		ser:     ser,
 		rclk:    rclk,
-		outputs: make([]int, 8)}
+		outputs: outputBits}
 
 	sr.Clear()
 	return sr
@@ -98,12 +103,14 @@ func main() {
 	if err := tr.Open(); err != nil {
 		log.Fatalln(err)
 	}
-	sr := NewShiftRegister(tr, 16, 22, 27)
-	sr2 := NewShiftRegister(tr, 21, 20, 12)
+	sr := NewShiftRegister(tr, 16, 22, 27, 8)
+	sr2 := NewShiftRegister(tr, 21, 20, 12, 8)
+	sr3 := NewShiftRegister(tr, 5, 6, 13, 16)
 
 	defer func() {
 		sr.Clear()
 		sr2.Clear()
+		sr3.Clear()
 		if err := tr.Close(); err != nil {
 			log.Fatalln(err)
 		}
@@ -111,16 +118,20 @@ func main() {
 
 	sr.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1})
 	sr2.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1})
-	time.Sleep(time.Second)
+	sr3.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0})
+	time.Sleep(time.Second * 5)
 	sr.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0})
 	sr2.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0})
-	time.Sleep(time.Second)
+	sr3.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0})
+	time.Sleep(time.Second * 5)
 	sr.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1})
 	sr2.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1})
-	time.Sleep(time.Second)
+	sr3.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1})
+	time.Sleep(time.Second * 5)
 	sr.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1})
 	sr2.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1})
-	time.Sleep(time.Second)
+	sr3.ShowCombo([]int{1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0})
+	time.Sleep(time.Second * 5)
 }
 
 type rpioProc struct{}
