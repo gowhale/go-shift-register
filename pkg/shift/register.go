@@ -1,13 +1,15 @@
+// Package shift contains code to control Shift Registers
 package shift
 
 import (
 	"log"
 	"time"
-
-	"github.com/stianeikeland/go-rpio"
 )
 
-func NewShiftRegister(tr RpioProcessor, serPin, srclkPin, rclkPin, bits int) ShiftRegister {
+// NewRegister returns a Register struct
+// Requires RpioProcessor and pin numbers for serPin, srclkPin, rclkPin
+// Also the amount of bits it controls i.e. if 2 8 bit shift registers are daisy chaned 16 bits
+func NewRegister(tr RpioProcessor, serPin, srclkPin, rclkPin, bits int) Register {
 	srclk := tr.Pin(srclkPin)
 	srclk.Output()
 	srclk.Low()
@@ -25,7 +27,7 @@ func NewShiftRegister(tr RpioProcessor, serPin, srclkPin, rclkPin, bits int) Shi
 		outputBits = append(outputBits, 0)
 	}
 
-	sr := ShiftRegister{srclk: srclk,
+	sr := Register{srclk: srclk,
 		ser:     ser,
 		rclk:    rclk,
 		outputs: outputBits}
@@ -34,14 +36,17 @@ func NewShiftRegister(tr RpioProcessor, serPin, srclkPin, rclkPin, bits int) Shi
 	return sr
 }
 
-type ShiftRegister struct {
+// Register represents a shift register
+type Register struct {
 	srclk   PinProcessor
 	ser     PinProcessor
 	rclk    PinProcessor
 	outputs []int
 }
 
-func (sr *ShiftRegister) ShowCombo(combo []int) {
+// ShowCombo will send a bit combination to the outputs of register
+// Note: Will always clear the display to start
+func (sr *Register) ShowCombo(combo []int) {
 	sr.Clear()
 	for i, j := 0, len(combo)-1; i < j; i, j = i+1, j-1 {
 		combo[i], combo[j] = combo[j], combo[i]
@@ -57,20 +62,9 @@ func (sr *ShiftRegister) ShowCombo(combo []int) {
 	sr.PushBit()
 }
 
-func (sr *ShiftRegister) OnOff() {
-	for count := 0; count < 50; count++ {
-		sr.ser.Low()
-		log.Println("OFF")
-		sr.PushBit()
-		time.Sleep(time.Second)
-		sr.ser.High()
-		log.Println("ON")
-		sr.PushBit()
-		time.Sleep(time.Second)
-	}
-}
-
-func (sr *ShiftRegister) PushBit() {
+// PushBit will push the bit on the ser pin to Q1
+// Will push all bits to next Q
+func (sr *Register) PushBit() {
 	highTime := time.Millisecond
 	sr.srclk.High()
 	time.Sleep(highTime)
@@ -80,72 +74,11 @@ func (sr *ShiftRegister) PushBit() {
 	sr.rclk.Low()
 }
 
-func (sr *ShiftRegister) Clear() {
+// Clear will set all Q outputs to 0
+func (sr *Register) Clear() {
 	sr.ser.Low()
 	for i := 0; i < len(sr.outputs)+1; i++ {
 		log.Printf("Clearing Q%d", i)
 		sr.PushBit()
 	}
-}
-
-type RpioProc struct{}
-
-type TermRPIO struct{}
-
-//go:generate go run github.com/vektra/mockery/cmd/mockery -name rpioProcessor -inpkg --filename rpio_processor_mock.go
-type RpioProcessor interface {
-	Open() (err error)
-	Close() (err error)
-	Pin(p int) PinProcessor
-}
-
-func (*RpioProc) Open() (err error) {
-	return rpio.Open()
-}
-
-func (*RpioProc) Close() (err error) {
-	return rpio.Close()
-}
-
-func (*RpioProc) Pin(p int) PinProcessor {
-	return rpio.Pin(p)
-}
-
-func (*TermRPIO) Open() (err error) {
-	log.Println("Opening")
-	return nil
-}
-
-func (*TermRPIO) Close() (err error) {
-	log.Println("Closing")
-	return nil
-}
-
-func (*TermRPIO) Pin(p int) PinProcessor {
-	return &TermPin{
-		bcm: p,
-	}
-}
-
-type TermPin struct {
-	bcm int
-}
-
-//go:generate go run github.com/vektra/mockery/cmd/mockery -name pinProcessor -inpkg --filename pin_processor_mock.go
-type PinProcessor interface {
-	Output()
-	Low()
-	High()
-}
-
-func (t *TermPin) Output() {
-	log.Printf("pin=%d mode=OUTPUT", t.bcm)
-}
-
-func (t *TermPin) Low() {
-	log.Printf("pin=%d val=LOW", t.bcm)
-}
-
-func (t *TermPin) High() {
-	log.Printf("pin=%d val=HIGH", t.bcm)
 }

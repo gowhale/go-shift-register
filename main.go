@@ -21,9 +21,9 @@ func main() {
 	if err := tr.Open(); err != nil {
 		log.Fatalln(err)
 	}
-	sr := shift.NewShiftRegister(tr, 16, 22, 27, 8)
-	sr2 := shift.NewShiftRegister(tr, 21, 20, 12, 8)
-	sr3 := shift.NewShiftRegister(tr, 5, 6, 13, 16)
+	sr := shift.NewRegister(tr, 16, 22, 27, 8)
+	sr2 := shift.NewRegister(tr, 21, 20, 12, 8)
+	sr3 := shift.NewRegister(tr, 5, 6, 13, 16)
 
 	defer func() {
 		sr.Clear()

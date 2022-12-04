@@ -39,5 +39,8 @@ enableAllRules = true
 [rule.use-any]
     disabled=true
 
+[rule.add-constant]
+    disabled=true
+
 [rule.package-comments]
     disabled=false
