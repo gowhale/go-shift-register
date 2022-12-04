@@ -34,20 +34,44 @@ func main() {
 		}
 	}()
 
-	sr.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1})
-	sr2.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1})
-	sr3.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0})
+	if err := sr.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1}); err != nil {
+		log.Fatalln(err)
+	}
+	if err := sr2.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1}); err != nil {
+		log.Fatalln(err)
+	}
+	if err := sr3.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0}); err != nil {
+		log.Fatalln(err)
+	}
 	time.Sleep(time.Second * 5)
-	sr.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0})
-	sr2.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0})
-	sr3.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0})
+	if err := sr.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0}); err != nil {
+		log.Fatalln(err)
+	}
+	if err := sr2.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0}); err != nil {
+		log.Fatalln(err)
+	}
+	if err := sr3.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0}); err != nil {
+		log.Fatalln(err)
+	}
 	time.Sleep(time.Second * 5)
-	sr.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1})
-	sr2.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1})
-	sr3.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1})
+	if err := sr.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1}); err != nil {
+		log.Fatalln(err)
+	}
+	if err := sr2.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1}); err != nil {
+		log.Fatalln(err)
+	}
+	if err := sr3.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1}); err != nil {
+		log.Fatalln(err)
+	}
 	time.Sleep(time.Second * 5)
-	sr.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1})
-	sr2.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1})
-	sr3.ShowCombo([]int{1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0})
+	if err := sr.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1}); err != nil {
+		log.Fatalln(err)
+	}
+	if err := sr2.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1}); err != nil {
+		log.Fatalln(err)
+	}
+	if err := sr3.ShowCombo([]int{1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0}); err != nil {
+		log.Fatalln(err)
+	}
 	time.Sleep(time.Second * 5)
 }

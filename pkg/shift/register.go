@@ -2,6 +2,7 @@
 package shift
 
 import (
+	"fmt"
 	"log"
 	"time"
 )
@@ -46,7 +47,11 @@ type Register struct {
 
 // ShowCombo will send a bit combination to the outputs of register
 // Note: Will always clear the display to start
-func (sr *Register) ShowCombo(combo []int) {
+func (sr *Register) ShowCombo(combo []int) error {
+	if len(sr.outputs) != len(combo) {
+		return fmt.Errorf("outputs not same length as bits")
+	}
+	sr.outputs = combo
 	sr.Clear()
 	for i, j := 0, len(combo)-1; i < j; i, j = i+1, j-1 {
 		combo[i], combo[j] = combo[j], combo[i]
@@ -60,6 +65,7 @@ func (sr *Register) ShowCombo(combo []int) {
 		sr.PushBit()
 	}
 	sr.PushBit()
+	return nil
 }
 
 // PushBit will push the bit on the ser pin to Q1
