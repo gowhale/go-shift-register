@@ -1,3 +1,4 @@
+// Package main in Christmas lights puts on a pretty light show!
 package main
 
 import (
@@ -8,7 +9,6 @@ import (
 )
 
 func main() {
-
 	var debugMode = flag.Bool("debug", false, "run in debug mode")
 	flag.Parse()
 

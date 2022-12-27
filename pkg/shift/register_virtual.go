@@ -33,7 +33,7 @@ func (sr *RegisterVirtual) NOutputs() int {
 	return len(sr.outputs)
 }
 
-func (sr *RegisterVirtual) ShowOutputs() {
+func (sr *RegisterVirtual) showOutputs() {
 	// Table headers
 	padding := ""
 	for range sr.outputs {
@@ -73,7 +73,7 @@ func (sr *RegisterVirtual) ShowCombo(combo []int) error {
 		}
 		sr.PushBit()
 	}
-	sr.ShowOutputs()
+	sr.showOutputs()
 	return nil
 }
 
