@@ -21,13 +21,10 @@ func main() {
 	if err := tr.Open(); err != nil {
 		log.Fatalln(err)
 	}
-	// sr := shift.NewRegister(tr, 16, 22, 27, 8)
-	// sr2 := shift.NewRegister(tr, 21, 20, 12, 8)
+
 	sr3 := shift.NewRegisterHardware(tr, 5, 6, 13, 32)
 
 	defer func() {
-		// sr.Clear()
-		// sr2.Clear()
 		sr3.Clear()
 		if err := tr.Close(); err != nil {
 			log.Fatalln(err)
@@ -40,36 +37,21 @@ func main() {
 }
 
 func lightShow(sr3 shift.Register) error {
-	// if err := sr.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1}); err != nil {
-	// 	return err
-	// }
-	// if err := sr2.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 1}); err != nil {
-	// 	return err
-	// }
 	if err := sr3.ShowCombo([]int{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0}); err != nil {
 		return err
 	}
 	time.Sleep(time.Second * 5)
-	// if err := sr.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0}); err != nil {
-	// 	return err
-	// }
-	// if err := sr2.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0}); err != nil {
-	// 	return err
-	// }
+
 	if err := sr3.ShowCombo([]int{1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0}); err != nil {
 		return err
 	}
 	time.Sleep(time.Second * 5)
-	// if err := sr.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1}); err != nil {
-	// 	return err
-	// }
-	// if err := sr2.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1}); err != nil {
-	// 	return err
-	// }
+
 	if err := sr3.ShowCombo([]int{0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1}); err != nil {
 		return err
 	}
 	time.Sleep(time.Second * 5)
+
 	if err := sr3.ShowCombo([]int{1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0}); err != nil {
 		return err
 	}
