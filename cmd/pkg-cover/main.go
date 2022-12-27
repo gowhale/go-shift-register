@@ -21,8 +21,9 @@ const (
 )
 
 var excludedPkgs = map[string]bool{
-	"go-shift-register":           true,
-	"go-shift-register/pkg/fruit": true,
+	"go-shift-register":                      true,
+	"go-shift-register/pkg/fruit":            true,
+	"go-shift-register/cmd/christmas-lights": true,
 }
 
 func main() {

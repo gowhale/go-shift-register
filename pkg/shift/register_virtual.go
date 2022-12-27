@@ -62,6 +62,7 @@ func (sr *RegisterVirtual) ShowCombo(combo []int) error {
 	if sr.NOutputs() != len(combo) {
 		return fmt.Errorf("outputs not same length as bits")
 	}
+	sr.Clear()
 	for i, j := 0, len(combo)-1; i < j; i, j = i+1, j-1 {
 		combo[i], combo[j] = combo[j], combo[i]
 	}
@@ -81,10 +82,10 @@ func (sr *RegisterVirtual) ShowCombo(combo []int) error {
 // Will push all bits to next Q
 func (sr *RegisterVirtual) PushBit() {
 	newOutputs := make([]int, sr.NOutputs())
+	newOutputs[0] = sr.nextBit
 	for i := 0; i < sr.NOutputs()-1; i++ {
 		newOutputs[i+1] = sr.outputs[i]
 	}
-	newOutputs[0] = sr.nextBit
 	sr.outputs = newOutputs
 }
 
