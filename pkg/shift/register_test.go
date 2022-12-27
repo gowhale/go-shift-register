@@ -9,11 +9,11 @@ import (
 type registerSuite struct {
 	suite.Suite
 
-	testRegister Register
+	testRegister RegisterHardware
 }
 
 func (t *registerSuite) SetupTest() {
-	t.testRegister = Register{
+	t.testRegister = RegisterHardware{
 		&termPin{}, &termPin{}, &termPin{}, []int{0, 0, 0, 0, 0, 0, 0, 0},
 	}
 }
@@ -23,14 +23,14 @@ func TestGuiSuite(t *testing.T) {
 }
 
 func (t *registerSuite) Test_NewRegister() {
-	r := NewRegister(&TermRPIO{}, 1, 2, 3, 8)
-	t.Equal(8, len(r.outputs))
+	r := NewRegisterHardware(&TermRPIO{}, 1, 2, 3, 8)
+	t.Equal(8, r.NOutputs())
 }
 
 func (t *registerSuite) Test_ShowCombo_Pass() {
 	testCombo := []int{0, 1, 0, 1, 0, 1, 0, 1}
 	err := t.testRegister.ShowCombo(testCombo)
-	t.Equal(testCombo, t.testRegister.outputs)
+	t.Equal(testCombo, t.testRegister.Outputs)
 	t.Nil(err)
 }
 
