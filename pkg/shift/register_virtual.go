@@ -16,7 +16,7 @@ func NewRegisterVirtual(bits int) Register {
 	}
 
 	sr := RegisterVirtual{
-		Outputs: outputBits,
+		outputs: outputBits,
 	}
 
 	sr.Clear()
@@ -26,28 +26,28 @@ func NewRegisterVirtual(bits int) Register {
 // RegisterVirtual represents a shift register
 type RegisterVirtual struct {
 	nextBit int
-	Outputs []int
+	outputs []int
 }
 
 // NOutputs returns amount of outputs
 func (sr *RegisterVirtual) NOutputs() int {
-	return len(sr.Outputs)
+	return len(sr.outputs)
 }
 
 func (sr *RegisterVirtual) ShowOutputs() {
 	// Table headers
 	padding := ""
-	for _ = range sr.Outputs {
+	for _ = range sr.outputs {
 		padding = padding + strings.Repeat("#", 6)
 	}
 	log.Println(padding)
 	header := ""
-	for i := range sr.Outputs {
+	for i := range sr.outputs {
 		header = header + fmt.Sprintf("%5s|", fmt.Sprintf("Q%d", i+1))
 	}
 	log.Println(header)
 	content := ""
-	for _, q := range sr.Outputs {
+	for _, q := range sr.outputs {
 		content = content + fmt.Sprintf("%5d|", q)
 	}
 	log.Println(content)
@@ -57,7 +57,7 @@ func (sr *RegisterVirtual) ShowOutputs() {
 // ShowCombo will send a bit combination to the outputs of register
 // Note: Will always clear the display to start
 func (sr *RegisterVirtual) ShowCombo(combo []int) error {
-	if len(sr.Outputs) != len(combo) {
+	if len(sr.outputs) != len(combo) {
 		return fmt.Errorf("outputs not same length as bits")
 	}
 	for i, j := 0, len(combo)-1; i < j; i, j = i+1, j-1 {
@@ -80,15 +80,15 @@ func (sr *RegisterVirtual) ShowCombo(combo []int) error {
 func (sr *RegisterVirtual) PushBit() {
 	newOutputs := make([]int, sr.NOutputs())
 	for i := 0; i < sr.NOutputs()-1; i++ {
-		newOutputs[i+1] = sr.Outputs[i]
+		newOutputs[i+1] = sr.outputs[i]
 	}
 	newOutputs[0] = sr.nextBit
-	sr.Outputs = newOutputs
+	sr.outputs = newOutputs
 }
 
 // Clear will set all Q outputs to 0
 func (sr *RegisterVirtual) Clear() {
-	for i := 0; i < len(sr.Outputs); i++ {
-		sr.Outputs[i] = 0
+	for i := 0; i < len(sr.outputs); i++ {
+		sr.outputs[i] = 0
 	}
 }
