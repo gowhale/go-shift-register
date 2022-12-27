@@ -56,29 +56,25 @@ func merryChristmas(sr shift.Register) error {
 		// for cycle := 0; cycle < 100; cycle++ {
 		for count := 0; count < sr.NOutputs(); count++ {
 			combo := lightAddition(sr.NOutputs(), count)
-			sr.ShowCombo(combo)
+			if err := sr.ShowCombo(combo); err != nil {
+				return err
+			}
 			time.Sleep(time.Millisecond * 300)
 		}
 
 		// for count := 0; count < 100; count++ {
 		combo := everyOtherLight(sr.NOutputs(), 0)
-		sr.ShowCombo(combo)
+		if err := sr.ShowCombo(combo); err != nil {
+			return err
+		}
 		time.Sleep(time.Millisecond * 200)
 		combo = everyOtherLight(sr.NOutputs(), 1)
-		sr.ShowCombo(combo)
+		if err := sr.ShowCombo(combo); err != nil {
+			return err
+		}
 		time.Sleep(time.Millisecond * 200)
 		// }
 	}
-	return nil
-}
-
-func onlyOne(bits, offset int) []int {
-	lights := []int{}
-	for x := 0; x < bits; x++ {
-		lights = append(lights, 0)
-	}
-	lights[offset] = 1
-	return lights
 }
 
 func lightAddition(bits, offset int) []int {

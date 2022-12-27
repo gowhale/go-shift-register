@@ -36,20 +36,23 @@ func (sr *RegisterVirtual) NOutputs() int {
 func (sr *RegisterVirtual) ShowOutputs() {
 	// Table headers
 	padding := ""
-	for _ = range sr.outputs {
+	for range sr.outputs {
 		padding = padding + strings.Repeat("#", 6)
 	}
 	log.Println(padding)
+
 	header := ""
 	for i := range sr.outputs {
 		header = header + fmt.Sprintf("%5s|", fmt.Sprintf("Q%d", i+1))
 	}
+
 	log.Println(header)
 	content := ""
 	for _, q := range sr.outputs {
 		content = content + fmt.Sprintf("%5d|", q)
 	}
 	log.Println(content)
+
 	log.Println(padding)
 }
 
