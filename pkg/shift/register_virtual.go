@@ -6,9 +6,8 @@ import (
 	"strings"
 )
 
-// NewRegisterVirtual returns a Register struct
-// Requires RpioProcessor and pin numbers for serPin, srclkPin, rclkPin
-// Also the amount of bits it controls i.e. if 2 8 bit shift registers are daisy chaned 16 bits
+// NewRegisterVirtual returns a RegisterVirtual struct
+// Used for testing patters without connecting to LEDS etc.
 func NewRegisterVirtual(bits int) Register {
 	outputBits := []int{}
 	for i := 0; i < bits; i++ {
