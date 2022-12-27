@@ -53,7 +53,7 @@ func (sr *RegisterHardware) NOutputs() int {
 // ShowCombo will send a bit combination to the outputs of register
 // Note: Will always clear the display to start
 func (sr *RegisterHardware) ShowCombo(combo []int) error {
-	if len(sr.Outputs) != len(combo) {
+	if sr.NOutputs() != len(combo) {
 		return fmt.Errorf("outputs not same length as bits")
 	}
 	sr.Outputs = combo
@@ -88,7 +88,7 @@ func (sr *RegisterHardware) PushBit() {
 // Clear will set all Q outputs to 0
 func (sr *RegisterHardware) Clear() {
 	sr.ser.Low()
-	for i := 0; i < len(sr.Outputs)+1; i++ {
+	for i := 0; i < sr.NOutputs()+1; i++ {
 		log.Printf("Clearing Q%d", i)
 		sr.PushBit()
 	}

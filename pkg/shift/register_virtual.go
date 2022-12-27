@@ -57,7 +57,7 @@ func (sr *RegisterVirtual) ShowOutputs() {
 // ShowCombo will send a bit combination to the outputs of register
 // Note: Will always clear the display to start
 func (sr *RegisterVirtual) ShowCombo(combo []int) error {
-	if len(sr.outputs) != len(combo) {
+	if sr.NOutputs() != len(combo) {
 		return fmt.Errorf("outputs not same length as bits")
 	}
 	for i, j := 0, len(combo)-1; i < j; i, j = i+1, j-1 {
@@ -88,7 +88,7 @@ func (sr *RegisterVirtual) PushBit() {
 
 // Clear will set all Q outputs to 0
 func (sr *RegisterVirtual) Clear() {
-	for i := 0; i < len(sr.outputs); i++ {
+	for i := 0; i < sr.NOutputs(); i++ {
 		sr.outputs[i] = 0
 	}
 }
